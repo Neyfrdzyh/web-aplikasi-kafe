@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Registrasi - Kafe Nayla</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#F8F4EE;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.register-box{
+    background:white;
+    width:450px;
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.register-box h2{
+    text-align:center;
+    color:#3E2723;
+    margin-bottom:30px;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+    color:#555;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+}
+
+.btn-register{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#C67C4E;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn-register:hover{
+    opacity:0.9;
+}
+
+.login-link{
+    text-align:center;
+    margin-top:20px;
+}
+
+.login-link a{
+    color:#C67C4E;
+    text-decoration:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="register-box">
+
+    <h2>☕ Registrasi Kafe Nayla</h2>
+
+    <form action="#" method="POST">
+
+        <div class="input-group">
+            <label>Nama Lengkap</label>
+            <input type="text" placeholder="Masukkan nama lengkap" required>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" placeholder="Masukkan email" required>
+        </div>
+
+        <div class="input-group">
+            <label>No. Telepon</label>
+            <input type="tel" placeholder="Masukkan nomor telepon" required>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" placeholder="Masukkan password" required>
+        </div>
+
+        <div class="input-group">
+            <label>Konfirmasi Password</label>
+            <input type="password" placeholder="Ulangi password" required>
+        </div>
+
+        <button type="submit" class="btn-register">
+            Daftar
+        </button>
+
+    </form>
+
+    <div class="login-link">
+        Sudah punya akun?
+        <a href="login.html">Login</a>
+    </div>
+
+</div>
+
+</body>
+</html>
