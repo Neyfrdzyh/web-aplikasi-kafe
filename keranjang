@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Keranjang - Nara Cafe</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#F8F4EE;
+    padding:30px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+h1{
+    color:#3E2723;
+    margin-bottom:30px;
+}
+
+.cart-item{
+    background:white;
+    display:flex;
+    gap:20px;
+    padding:20px;
+    border-radius:20px;
+    margin-bottom:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.cart-item img{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+.cart-info{
+    flex:1;
+}
+
+.cart-info h3{
+    color:#3E2723;
+}
+
+.cart-info p{
+    color:#666;
+    margin:5px 0;
+}
+
+.harga{
+    color:#C67C4E;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.total{
+    text-align:right;
+    font-size:28px;
+    color:#3E2723;
+    margin-top:30px;
+    font-weight:bold;
+}
+
+.btn-group{
+    margin-top:30px;
+    display:flex;
+    gap:15px;
+}
+
+button{
+    padding:14px 20px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-home{
+    background:#777;
+    color:white;
+}
+
+.btn-checkout{
+    background:#C67C4E;
+    color:white;
+}
+
+.btn-hapus{
+    background:#E74C3C;
+    color:white;
+    margin-top:10px;
+}
+
+.empty{
+    background:white;
+    padding:40px;
+    text-align:center;
+    border-radius:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🛒 Keranjang Nara Cafe</h1>
+
+    <div id="daftarKeranjang"></div>
+
+    <div class="total" id="total"></div>
+
+    <div class="btn-group">
+        <button class="btn-home"
+            onclick="window.location.href='menu.html'">
+            ← Kembali ke Menu
+        </button>
+
+        <button class="btn-checkout"
+            onclick="checkout()">
+            Checkout
+        </button>
+    </div>
+
+</div>
+
+<script>
+
+let keranjang =
+JSON.parse(localStorage.getItem("keranjang")) || [];
+
+const daftar =
+document.getElementById("daftarKeranjang");
+
+const totalElement =
+document.getElementById("total");
+
+function tampilkanKeranjang(){
+
+    daftar.innerHTML="";
+
+    let total=0;
+
+    if(keranjang.length===0){
+
+        daftar.innerHTML=`
+            <div class="empty">
+                Keranjang masih kosong 🥺
+            </div>
+        `;
+
+        totalElement.innerHTML="";
+        return;
+    }
+
+    keranjang.forEach((item,index)=>{
+
+        const subtotal =
+        item.harga * item.jumlah;
+
+        total += subtotal;
+
+        daftar.innerHTML += `
+            <div class="cart-item">
+
+                <img src="${item.gambar}">
+
+                <div class="cart-info">
+
+                    <h3>${item.namaMenu}</h3>
+
+                    <p>${item.deskripsi}</p>
+
+                    <p>Jumlah : ${item.jumlah}</p>
+
+                    <div class="harga">
+                        Rp ${subtotal.toLocaleString("id-ID")}
+                    </div>
+
+                    <button
+                        class="btn-hapus"
+                        onclick="hapusItem(${index})">
+                        Hapus
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+    });
+
+    totalElement.innerHTML =
+    "Total : Rp " +
+    total.toLocaleString("id-ID");
+}
+
+function hapusItem(index){
+
+    keranjang.splice(index,1);
+
+    localStorage.setItem(
+        "keranjang",
+        JSON.stringify(keranjang)
+    );
+
+    tampilkanKeranjang();
+}
+
+function checkout(){
+
+    alert(
+        "Terima kasih telah memesan di Nara Cafe ☕"
+    );
+
+    localStorage.removeItem("keranjang");
+
+    window.location.reload();
+}
+
+tampilkanKeranjang();
+
+</script>
+
+</body>
+</html>
