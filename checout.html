@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Checkout - Nara Cafe</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#F8F4EE;
+    padding:30px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#3E2723;
+    margin-bottom:25px;
+    text-align:center;
+}
+
+h2{
+    color:#3E2723;
+    margin:25px 0 15px;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+}
+
+.radio-group{
+    margin-top:10px;
+}
+
+.radio-group label{
+    font-weight:normal;
+    margin-bottom:10px;
+}
+
+#qrisSection,
+#transferSection,
+#struk{
+    display:none;
+}
+
+#qrisSection img{
+    width:250px;
+    display:block;
+    margin:20px auto;
+}
+
+.transfer-box{
+    background:#FAF6F0;
+    padding:15px;
+    border-radius:15px;
+    margin-top:15px;
+}
+
+.item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
+
+.total{
+    font-size:22px;
+    font-weight:bold;
+    color:#C67C4E;
+    margin-top:20px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#C67C4E;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:25px;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.struk-box{
+    margin-top:30px;
+    background:#FAF6F0;
+    padding:25px;
+    border-radius:20px;
+}
+
+.struk-box p{
+    margin:10px 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>☕ Checkout Nara Cafe</h1>
+
+    <label>Nomor Meja</label>
+    <input
+        type="number"
+        id="nomorMeja"
+        placeholder="Masukkan nomor meja">
+
+    <label>Catatan Pesanan (Opsional)</label>
+    <textarea
+        id="catatan"
+        rows="3"
+        placeholder="Contoh: jangan pedas"></textarea>
+
+    <h2>Metode Pembayaran</h2>
+
+    <div class="radio-group">
+
+        <label>
+            <input type="radio"
+                name="bayar"
+                value="Tunai">
+            Tunai
+        </label>
+
+        <label>
+            <input type="radio"
+                name="bayar"
+                value="QRIS">
+            QRIS
+        </label>
+
+        <label>
+            <input type="radio"
+                name="bayar"
+                value="Transfer">
+            Transfer Bank
+        </label>
+
+    </div>
+
+    <h2>Ringkasan Pesanan</h2>
+
+    <div id="ringkasan"></div>
+
+    <div class="total" id="total"></div>
+
+    <button onclick="konfirmasiPesanan()">
+        Konfirmasi Pesanan
+    </button>
+
+</div>
+
+<script>
+
+const keranjang =
+JSON.parse(localStorage.getItem("keranjang")) || [];
+
+const ringkasan =
+document.getElementById("ringkasan");
+
+const totalElement =
+document.getElementById("total");
+
+let total = 0;
+
+keranjang.forEach(item => {
+
+    const subtotal =
+    item.harga * item.jumlah;
+
+    total += subtotal;
+
+    ringkasan.innerHTML += `
+        <div class="item">
+
+            <span>
+                ${item.namaMenu}
+                x${item.jumlah}
+            </span>
+
+            <span>
+                Rp ${subtotal.toLocaleString("id-ID")}
+            </span>
+
+        </div>
+    `;
+});
+
+totalElement.innerHTML =
+"Total : Rp " +
+total.toLocaleString("id-ID");
+
+function konfirmasiPesanan(){
+
+    const meja =
+    document.getElementById("nomorMeja").value;
+
+    const catatan =
+    document.getElementById("catatan").value;
+
+    const metode =
+    document.querySelector(
+        'input[name="bayar"]:checked'
+    );
+
+    if(keranjang.length === 0){
+
+        alert("Keranjang masih kosong!");
+        return;
+    }
+
+    if(meja === ""){
+
+        alert("Silakan masukkan nomor meja!");
+        return;
+    }
+
+    if(!metode){
+
+        alert("Pilih metode pembayaran!");
+        return;
+    }
+
+    let isi = `
+        <p><strong>Nomor Meja:</strong> ${meja}</p>
+
+        <p><strong>Pembayaran:</strong>
+        ${metode.value}</p>
+
+        <p><strong>Pesanan:</strong></p>
+    `;
+
+    keranjang.forEach(item => {
+
+        isi += `
+            <p>
+                • ${item.namaMenu}
+                x${item.jumlah}
+            </p>
+        `;
+    });
+
+    isi += `
+        <p>
+            <strong>Total:</strong>
+            Rp ${total.toLocaleString("id-ID")}
+        </p>
+
+        <p>
+            <strong>Catatan:</strong>
+            ${catatan || "-"}
+        </p>
+
+        <p>
+            Terima kasih telah memesan
+            di Nara Cafe ☕
+        </p>
+
+        <p>
+            Pesanan Anda sedang diproses.
+        </p>
+    `;
+
+const dataStruk = {
+    meja: meja,
+    pembayaran: metode.value,
+    catatan: catatan,
+    pesanan: keranjang,
+    total: total
+};
+
+localStorage.setItem(
+    "dataStruk",
+    JSON.stringify(dataStruk)
+);
+
+if(metode.value === "Tunai"){
+
+    localStorage.removeItem("keranjang");
+
+    window.location.href = "struk.html";
+}
+
+else if(metode.value === "QRIS"){
+
+    window.location.href = "qris.html";
+}
+
+else if(metode.value === "Transfer"){
+
+    window.location.href = "transfer.html";
+}
+}
+
+</script>
+
+</body>
+</html>
