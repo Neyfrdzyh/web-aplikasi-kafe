@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Transfer Bank - Nara Cafe</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#F8F4EE;
+    padding:30px;
+}
+
+.container{
+    max-width:600px;
+    margin:auto;
+    background:white;
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#3E2723;
+}
+
+.bank-box{
+    margin:30px 0;
+    padding:25px;
+    background:#FAF6F0;
+    border-radius:20px;
+}
+
+button{
+    padding:15px 25px;
+    border:none;
+    border-radius:12px;
+    background:#C67C4E;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    font-size:16px;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🏦 Transfer Bank</h1>
+
+    <p>Silakan transfer ke rekening berikut:</p>
+
+    <div class="bank-box">
+
+        <h2>BCA</h2>
+
+        <p>1234567890</p>
+
+        <p>a.n. Nara Cafe</p>
+
+    </div>
+
+    <button onclick="selesaiTransfer()">
+        Sudah Transfer
+    </button>
+
+</div>
+
+<script>
+
+function selesaiTransfer(){
+
+    localStorage.removeItem("keranjang");
+
+    window.location.href = "struk.html";
+}
+
+</script>
+
+</body>
+</html>
