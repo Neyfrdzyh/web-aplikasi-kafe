@@ -133,7 +133,7 @@ button{
         </button>
 
         <button class="btn-checkout"
-            onclick="checkout()">
+            onclick="window.location.href='checkout.html'">
             Checkout
         </button>
     </div>
@@ -220,17 +220,6 @@ function hapusItem(index){
     );
 
     tampilkanKeranjang();
-}
-
-function checkout(){
-
-    alert(
-        "Terima kasih telah memesan di Nara Cafe ☕"
-    );
-
-    localStorage.removeItem("keranjang");
-
-    window.location.reload();
 }
 
 tampilkanKeranjang();
