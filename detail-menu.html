@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Detail Menu - Nara Cafe</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#F8F4EE;
+    padding:20px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.back-btn{
+    display:inline-block;
+    margin-bottom:20px;
+    text-decoration:none;
+    color:#3E2723;
+    font-weight:600;
+}
+
+.main-image{
+    width:100%;
+    height:350px;
+    object-fit:cover;
+    border-radius:20px;
+}
+
+.thumbnail-container{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+    margin-bottom:20px;
+}
+
+.thumbnail{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:12px;
+    cursor:pointer;
+    border:2px solid transparent;
+}
+
+.thumbnail:hover{
+    border-color:#C67C4E;
+}
+
+h1{
+    color:#3E2723;
+    margin-bottom:10px;
+}
+
+.rating{
+    color:#F4B400;
+    margin-bottom:10px;
+}
+
+.badge{
+    display:inline-block;
+    background:#FFE8D6;
+    color:#C67C4E;
+    padding:8px 14px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:15px;
+}
+
+.price{
+    font-size:30px;
+    font-weight:bold;
+    color:#C67C4E;
+    margin-bottom:20px;
+}
+
+.desc{
+    color:#555;
+    line-height:1.7;
+    margin-bottom:20px;
+}
+
+.info{
+    background:#FAF6F0;
+    padding:15px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.info p{
+    margin:8px 0;
+}
+
+.quantity{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.quantity button{
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    background:#C67C4E;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.quantity span{
+    font-size:20px;
+    font-weight:600;
+}
+
+.cart-btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:15px;
+    background:#C67C4E;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.cart-btn:hover{
+    opacity:0.9;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="menu.html" class="back-btn">
+        ← Kembali ke Menu
+    </a>
+
+    <img id="mainImage" class="main-image">
+
+    <div class="thumbnail-container">
+        <img id="thumb1" class="thumbnail">
+        <img id="thumb2" class="thumbnail">
+        <img id="thumb3" class="thumbnail">
+    </div>
+
+    <h1 id="nama"></h1>
+
+    <div class="rating">
+        ★★★★★ 4.9 (<span id="ulasan"></span> ulasan)
+    </div>
+
+    <div class="badge" id="badge"></div>
+
+    <div class="price" id="harga"></div>
+
+    <div class="desc" id="deskripsi"></div>
+
+    <div class="info">
+        <p><strong>Kategori:</strong> <span id="kategori"></span></p>
+        <p><strong>Waktu Sajian:</strong> <span id="waktu"></span></p>
+
+        <p><strong>Kalori:</strong> <span id="kalori"></span></p>
+    </div>
+
+    <div class="quantity">
+        <button onclick="kurang()">−</button>
+
+        <span id="jumlah">1</span>
+
+        <button onclick="tambah()">+</button>
+    </div>
+
+    <button class="cart-btn" onclick="tambahKeranjang()">
+        Tambah ke Keranjang
+    </button>
+
+</div>
+
+<script>
+
+const menu = JSON.parse(localStorage.getItem("detailMenu"));
+
+const detailTambahan = {
+    "cappucino": {
+        kalori: 180,
+        waktu: 5,
+        ulasan: 125,
+        badge: "🔥 Best Seller"
+    },
+    "air putih": {
+        kalori: 0,
+        waktu: 1,
+        ulasan: 42,
+        badge: ""
+    },
+    "chocholatte": {
+        kalori: 260,
+        waktu: 6,
+        ulasan: 89,
+        badge: "🔥 Favorit Pelanggan"
+    },
+    "Matcha Latte": {
+        kalori: 220,
+        waktu: 7,
+        ulasan: 103,
+        badge: "🔥 Best Seller"
+    },
+    "nasi goreng": {
+        kalori: 550,
+        waktu: 15,
+        ulasan: 142,
+        badge: "🔥 Best Seller"
+    },
+    "ayam goreng": {
+        kalori: 480,
+        waktu: 12,
+        ulasan: 118,
+        badge: ""
+    },
+    "ayam bakar": {
+        kalori: 620,
+        waktu: 20,
+        ulasan: 97,
+        badge: "🔥 Favorit Pelanggan"
+    },
+    "burger": {
+        kalori: 650,
+        waktu: 10,
+        ulasan: 131,
+        badge: "🔥 Best Seller"
+    },
+    "French Fries": {
+        kalori: 320,
+        waktu: 8,
+        ulasan: 84,
+        badge: ""
+    }
+};
+
+let qty = 1;
+
+if(menu){
+    const info = detailTambahan[menu.namaMenu];
+
+    document.getElementById("kalori").innerText =
+    info.kalori + " kcal";
+
+    document.getElementById("waktu").innerText =
+    "±" + info.waktu + " menit";
+
+    document.getElementById("ulasan").innerText =
+    info.ulasan;
+
+    document.getElementById("badge").innerText =
+    info.badge;
+
+    document.getElementById("nama").innerText =
+    menu.namaMenu;
+
+    document.getElementById("harga").innerText =
+    "Rp " + menu.harga.toLocaleString("id-ID");
+
+    document.getElementById("deskripsi").innerText =
+    menu.deskripsi;
+
+    document.getElementById("kategori").innerText =
+    menu.kategori;
+
+    document.getElementById("mainImage").src =
+    menu.gambar;
+
+    document.getElementById("thumb1").src =
+    menu.gambar;
+
+    document.getElementById("thumb2").src =
+    menu.gambar;
+
+    document.getElementById("thumb3").src =
+    menu.gambar;
+}
+
+document.querySelectorAll(".thumbnail").forEach(img => {
+    img.addEventListener("click", function(){
+        document.getElementById("mainImage").src = this.src;
+    });
+});
+
+function tambah(){
+    qty++;
+    document.getElementById("jumlah").innerText = qty;
+}
+
+function kurang(){
+    if(qty > 1){
+        qty--;
+        document.getElementById("jumlah").innerText = qty;
+    }
+}
+
+function tambahKeranjang(){
+
+    let keranjang =
+    JSON.parse(localStorage.getItem("keranjang")) || [];
+
+    keranjang.push({
+        ...menu,
+        jumlah: qty
+    });
+
+    localStorage.setItem(
+        "keranjang",
+        JSON.stringify(keranjang)
+    );
+
+    alert("Menu berhasil ditambahkan ke keranjang!");
+}
+
+</script>
+
+</body>
+</html>
