@@ -205,105 +205,142 @@ h1{
 <script>
 
 const menu = JSON.parse(localStorage.getItem("detailMenu"));
-
 const detailTambahan = {
-    "Cappucinno": {
-        kalori: 180,
-        waktu: 5,
-        ulasan: 125,
-        badge: "🔥 Best Seller"
-    },
-    "air putih": {
-        kalori: 0,
-        waktu: 1,
-        ulasan: 42,
-        badge: ""
-    },
-    "chocholatte": {
-        kalori: 260,
-        waktu: 6,
-        ulasan: 89,
-        badge: "🔥 Favorit Pelanggan"
-    },
-    "Matcha Latte": {
-        kalori: 220,
-        waktu: 7,
-        ulasan: 103,
-        badge: "🔥 Best Seller"
-    },
-    "nasi goreng": {
-        kalori: 550,
-        waktu: 15,
-        ulasan: 142,
-        badge: "🔥 Best Seller"
-    },
-    "ayam goreng": {
-        kalori: 480,
-        waktu: 12,
-        ulasan: 118,
-        badge: ""
-    },
-    "ayam bakar": {
-        kalori: 620,
-        waktu: 20,
-        ulasan: 97,
-        badge: "🔥 Favorit Pelanggan"
-    },
-    "burger": {
+    "Burger": {
         kalori: 650,
         waktu: 10,
         ulasan: 131,
         badge: "🔥 Best Seller"
     },
+
     "French Fries": {
         kalori: 320,
         waktu: 8,
         ulasan: 84,
-        badge: ""
+        badge: "🔥 Favorit Pelanggan"
+    },
+
+    "Ayam Goreng": {
+        kalori: 480,
+        waktu: 12,
+        ulasan: 118,
+        badge: "🔥 Best Seller"
+    },
+
+    "Ayam Panggang": {
+        kalori: 620,
+        waktu: 20,
+        ulasan: 97,
+        badge: "🔥 Chef Recommendation"
+    },
+
+    "Snack Platter": {
+        kalori: 550,
+        waktu: 15,
+        ulasan: 76,
+        badge: "🔥 Cocok untuk Sharing"
+    },
+
+    "Cappuccino": {
+        kalori: 180,
+        waktu: 5,
+        ulasan: 125,
+        badge: "🔥 Best Seller"
+    },
+
+    "Matcha": {
+        kalori: 220,
+        waktu: 7,
+        ulasan: 103,
+        badge: "🔥 Favorit Pelanggan"
+    },
+
+    "Chocolate": {
+        kalori: 260,
+        waktu: 6,
+        ulasan: 89,
+        badge: "🍫 Manis Favorit"
+    },
+
+    "Air Putih": {
+        kalori: 0,
+        waktu: 1,
+        ulasan: 42,
+        badge: "💧 Sehat"
+    },
+
+    "Jus Alpukat": {
+        kalori: 210,
+        waktu: 5,
+        ulasan: 95,
+        badge: "🥑 Fresh Choice"
+    },
+
+    "Es Krim Mangkok": {
+        kalori: 290,
+        waktu: 4,
+        ulasan: 87,
+        badge: "🍨 Dessert Favorit"
     }
 };
 
 let qty = 1;
 
 if(menu){
-    const info = detailTambahan[menu.namaMenu];
+
+    const info = detailTambahan[menu.namaMenu] || {
+        kalori: "-",
+        waktu: "-",
+        ulasan: 0,
+        badge: "Menu Pilihan"
+    };
 
     document.getElementById("kalori").innerText =
-    info.kalori + " kcal";
+        info.kalori === "-" ? "-" : info.kalori + " kcal";
 
     document.getElementById("waktu").innerText =
-    "±" + info.waktu + " menit";
+        info.waktu === "-" ? "-" : "±" + info.waktu + " menit";
 
     document.getElementById("ulasan").innerText =
-    info.ulasan;
+        info.ulasan;
 
     document.getElementById("badge").innerText =
-    info.badge;
+        info.badge;
 
     document.getElementById("nama").innerText =
-    menu.namaMenu;
+        menu.namaMenu;
 
     document.getElementById("harga").innerText =
-    "Rp " + menu.harga.toLocaleString("id-ID");
+        "Rp " + menu.harga.toLocaleString("id-ID");
 
     document.getElementById("deskripsi").innerText =
-    menu.deskripsi;
+        menu.deskripsi;
 
     document.getElementById("kategori").innerText =
-    menu.kategori;
+        menu.kategori;
 
     document.getElementById("mainImage").src =
-    menu.gambar;
+        menu.gambar;
 
-    document.getElementById("thumb1").src =
-    menu.gambar;
+    document.getElementById("mainImage").onerror = function(){
+        this.src = "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600";
+    };
 
-    document.getElementById("thumb2").src =
-    menu.gambar;
-
-    document.getElementById("thumb3").src =
-    menu.gambar;
+    document.getElementById("thumb1").src = menu.gambar;
+    document.getElementById("thumb2").src = menu.gambar;
+    document.getElementById("thumb3").src = menu.gambar;
 }
+document.querySelectorAll(".thumbnail").forEach(img => {
+
+    img.onerror = function(){
+        this.src = "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600";
+    };
+
+    img.addEventListener("click", function(){
+        document.getElementById("mainImage").src = this.src;
+    });
+
+});
 
 document.querySelectorAll(".thumbnail").forEach(img => {
     img.addEventListener("click", function(){
