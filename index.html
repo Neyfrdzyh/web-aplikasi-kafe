@@ -194,6 +194,22 @@ footer p{color:rgba(255,255,255,.65);font-size:13px;line-height:2;}
 footer .footer-divider{width:40px;height:2px;background:#C8667A;margin:24px auto;}
 footer .copy{font-size:11px;color:rgba(255,255,255,.3);margin-top:24px;}
 
+.logout-btn{
+  padding:6px 14px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.35);
+  color:#fff;
+  font-size:12px;
+  transition:0.3s;
+}
+
+.logout-btn:hover{
+  background:#C8667A;
+  border-color:#C8667A;
+  transform:translateY(-2px);
+}
+
 /* ── ANIMATIONS ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
 </style>
@@ -204,12 +220,15 @@ footer .copy{font-size:11px;color:rgba(255,255,255,.3);margin-top:24px;}
   <div class="logo">☕ Nara Café ☕</div>
   <ul>
     <li><a href="#">Home</a></li>
-    <li><a href="menu.html">Menu</a></li>
+    <li><a href="#" onclick="cekLoginMenu()">Menu</a></li>
     <li><a href="#story">Tentang</a></li>
-    <li><a href="#">Reservasi</a></li>
     <li><a href="login.html">Login</a></li>
     <li><a href="register.html">Registrasi</a></li>
+    <li><a href="#" onclick="cekLoginReservasi()">Reservasi</a></li>
     <li><span class="nav-open-badge">● Buka 08.00–22.00</span></li>
+    <li>
+      <a href="#" class="logout-btn" onclick="logout()">Logout</a>
+    </li>
   </ul>
 </nav>
 
@@ -219,8 +238,10 @@ footer .copy{font-size:11px;color:rgba(255,255,255,.3);margin-top:24px;}
     <span class="hero-eyebrow">by three women, for everyone</span>
     <h1>Kopi Terbaik untuk<br><em>Hari Terbaik</em></h1>
     <p>Nikmati pengalaman ngopi dengan suasana hangat, modern,<br>dan penuh cinta.</p>
-    <a href="menu.html" class="btn btn-primary">Lihat Menu</a>
-    <button class="btn btn-secondary">Reservasi</button>
+    <a href="#" class="btn btn-primary" onclick="cekLoginMenu()">Lihat Menu</a>
+    <button class="btn btn-secondary" onclick="cekLoginReservasi()">
+      Reservasi
+    </button>
   </div>
 </section>
 
@@ -358,6 +379,43 @@ footer .copy{font-size:11px;color:rgba(255,255,255,.3);margin-top:24px;}
   <div class="footer-divider"></div>
   <p class="copy">© 2026 Nara Café. Dibuat dengan ❤️ di Surabaya.</p>
 </footer>
+<script>
+function cekLoginReservasi(){
 
+    const userLogin =
+    JSON.parse(localStorage.getItem("userLogin"));
+
+    if(!userLogin){
+        alert("Silakan login terlebih dahulu!");
+        window.location.href = "login.html";
+    }
+    else{
+        window.location.href = "reservasi.html";
+    }
+}
+function logout(){
+
+    // hapus session login
+    localStorage.removeItem("userLogin");
+
+    alert("Logout berhasil 👋");
+
+    // balik ke home
+    window.location.href = "index.html";
+}
+function cekLoginMenu(){
+
+    const userLogin =
+    JSON.parse(localStorage.getItem("userLogin"));
+
+    if(!userLogin){
+        alert("Silakan login terlebih dahulu!");
+        window.location.href = "login.html";
+    }
+    else{
+        window.location.href = "menu.html";
+    }
+}
+</script>
 </body>
 </html>
