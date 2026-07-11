@@ -192,142 +192,102 @@ button:hover{
 const keranjang =
 JSON.parse(localStorage.getItem("keranjang")) || [];
 
-const ringkasan =
-document.getElementById("ringkasan");
-
-const totalElement =
-document.getElementById("total");
+const ringkasan = document.getElementById("ringkasan");
+const totalElement = document.getElementById("total");
 
 let total = 0;
 
 keranjang.forEach(item => {
 
-    const subtotal =
-    item.harga * item.jumlah;
-
+    const subtotal = item.harga * item.jumlah;
     total += subtotal;
 
     ringkasan.innerHTML += `
         <div class="item">
-
-            <span>
-                ${item.namaMenu}
-                x${item.jumlah}
-            </span>
-
-            <span>
-                Rp ${subtotal.toLocaleString("id-ID")}
-            </span>
-
+            <span>${item.namaMenu} x${item.jumlah}</span>
+            <span>Rp ${subtotal.toLocaleString("id-ID")}</span>
         </div>
     `;
 });
 
 totalElement.innerHTML =
-"Total : Rp " +
-total.toLocaleString("id-ID");
+"Total : Rp " + total.toLocaleString("id-ID");
 
-function konfirmasiPesanan(){
 
-    const meja =
-    document.getElementById("nomorMeja").value;
+// 🔥 WAJIB: bikin function global (biar tombol bisa akses)
+window.konfirmasiPesanan = function () {
 
-    const catatan =
-    document.getElementById("catatan").value;
+    const meja = document.getElementById("nomorMeja").value;
+    const catatan = document.getElementById("catatan").value;
+    const metode = document.querySelector('input[name="bayar"]:checked');
 
-    const metode =
-    document.querySelector(
-        'input[name="bayar"]:checked'
-    );
-
-    if(keranjang.length === 0){
-
+    if (keranjang.length === 0) {
         alert("Keranjang masih kosong!");
         return;
     }
 
-    if(meja === ""){
-
+    if (meja === "") {
         alert("Silakan masukkan nomor meja!");
         return;
     }
 
-    if(!metode){
-
+    if (!metode) {
         alert("Pilih metode pembayaran!");
         return;
     }
 
-    let isi = `
-        <p><strong>Nomor Meja:</strong> ${meja}</p>
+    const userLogin =
+    JSON.parse(localStorage.getItem("userLogin"));
 
-        <p><strong>Pembayaran:</strong>
-        ${metode.value}</p>
+    const dataStruk = {
+        namaUser: userLogin ? userLogin.nama : "Guest",
+        tanggal: new Date().toLocaleString("id-ID"),
+        meja: meja,
+        pembayaran: metode.value,
+        catatan: catatan,
+        pesanan: keranjang,
+        total: total,
+        status: "Lunas"
+    };
 
-        <p><strong>Pesanan:</strong></p>
-    `;
+    // STRUK UPDATE
+    localStorage.setItem("dataStruk", JSON.stringify(dataStruk));
 
-    keranjang.forEach(item => {
+    // ADMIN RIWAYAT (SEMUA PESANAN)
+/* =========================
+   ADMIN: SEMUA PESANAN
+========================= */
+let riwayat =
+JSON.parse(localStorage.getItem("riwayatPesanan")) || [];
 
-        isi += `
-            <p>
-                • ${item.namaMenu}
-                x${item.jumlah}
-            </p>
-        `;
-    });
-
-    isi += `
-        <p>
-            <strong>Total:</strong>
-            Rp ${total.toLocaleString("id-ID")}
-        </p>
-
-        <p>
-            <strong>Catatan:</strong>
-            ${catatan || "-"}
-        </p>
-
-        <p>
-            Terima kasih telah memesan
-            di Nara Cafe ☕
-        </p>
-
-        <p>
-            Pesanan Anda sedang diproses.
-        </p>
-    `;
-
-const dataStruk = {
-    meja: meja,
-    pembayaran: metode.value,
-    catatan: catatan,
-    pesanan: keranjang,
-    total: total
-};
+riwayat.push(dataStruk);
 
 localStorage.setItem(
-    "dataStruk",
+    "riwayatPesanan",
+    JSON.stringify(riwayat)
+);
+
+/* =========================
+   USER: HANYA 1 TERAKHIR
+========================= */
+localStorage.setItem(
+    "riwayatTerakhir_" + userLogin.nama,
     JSON.stringify(dataStruk)
 );
 
-if(metode.value === "Tunai"){
-
     localStorage.removeItem("keranjang");
 
-    window.location.href = "struk.html";
-}
+    setTimeout(() => {
+        if (metode.value === "Tunai") {
+            window.location.href = "struk.html";
+        } else if (metode.value === "QRIS") {
+            window.location.href = "qris.html";
+        } else {
+            window.location.href = "transfer.html";
+        }
+    }, 100);
 
-else if(metode.value === "QRIS"){
-
-    window.location.href = "qris.html";
-}
-
-else if(metode.value === "Transfer"){
-
-    window.location.href = "transfer.html";
-}
-}
+};
 
 </script>
 
